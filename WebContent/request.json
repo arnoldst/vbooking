@@ -1,0 +1,10 @@
+
+{
+  "application": "VacationBooking",
+  "applicationProcess": "DeployVacationBooking",
+  "description": "Description for the request (Optional)",
+  "environment": "ContinuousDelivery",
+  "onlyChanged": "true",
+  "snapshot": "CD_14"
+}
+        

@@ -1,0 +1,122 @@
+<project default="main" basedir=".">
+
+
+    <property environment="env" />
+    <property name="udclient.weburl" value="https://10.99.92.70"/>
+    <property name="udclient.username" value="admin"/>
+    <property name="udclient.password" value="admin"/>
+    <property name="udclient.version" value="CD_${env.BUILD_NUMBER}"/>
+    <property name="environment.name" value="continuousdelivery"/>
+
+
+    <target name="clean">
+        <mkdir dir="${basedir}/target"/>
+        <delete file="${basedir}/target/vbooking-home.war"/>
+    </target>
+
+    <target name="build" depends="clean">
+        
+        <mkdir dir="${basedir}/target"/>
+        <war destfile = "${basedir}/target/vbooking-home.war" webxml = "${basedir}/WebContent/WEB-INF/web.xml">
+
+        <fileset dir = "${basedir}/WebContent">
+            <include name = "**/*.*"/>
+        </fileset>
+
+        
+        <classes dir = "${basedir}/WebContent/WEB-INF/classes"/>
+        <lib dir = "${basedir}/WebContent/WEB-INF/lib"/>
+       </war> 
+      
+    </target>
+
+    <target name="publishToUCD" depends="build">
+        <exec executable="/bin/bash" 
+            outputproperty="mycomponent.component.output">
+
+            <arg value="/opt/udclient/udclient"/>
+            <arg value="-weburl"/> <arg value="${udclient.weburl}"/>
+            <arg value="-username"/><arg value="${udclient.username}"/>
+            <arg value="-password"/><arg value="${udclient.password}"/>
+            <arg value="createVersion"/>
+            <arg value="-component"/><arg value="Vacation_BookingApp_Liberty"/>
+            <arg value="-name"/><arg value="${udclient.version}"/>
+
+        </exec>
+ 
+        <exec executable="/bin/bash">
+
+            <arg value="/opt/udclient/udclient"/>
+            <arg value="-weburl"/> <arg value="${udclient.weburl}"/>
+            <arg value="-username"/> <arg value="${udclient.username}"/>
+            <arg value="-password"/> <arg value="${udclient.password}"/>
+            <arg value="addVersionFiles"/>
+            <arg value="-component"/> <arg value="Vacation_BookingApp_Liberty"/>
+            <arg value="-version"/> <arg value="${udclient.version}"/>
+            <arg value="-base"/> <arg value="${basedir}/target"/>
+            
+        </exec>
+
+        <echo file="${basedir}/snapshot.json">
+{'name': '${udclient.version}',
+'application': 'VacationBooking',
+'description': 'cd snapshot',
+'versions': [{'Vacation-liberty-config': 'latest'}, {'java': 'latest'}, {'MQ': 'latest'},
+                {'RIT_MQExits':'latest'},
+                {'Vacation_BookingApp_Liberty':'latest'}, {'Vacation_MQ_Config':'latest'}, {'Vacation_IntegrationTestConfig':'latest'},
+                {'VacationBooking_Proxy':'latest'}, {'Vacation_PerformanceTests':'latest'}]
+}
+        </echo>
+
+        <exec executable="/bin/bash">
+            <arg value="/opt/udclient/udclient"/>
+            <arg value="-weburl"/> <arg value="${udclient.weburl}"/>
+            <arg value="-username"/> <arg value="${udclient.username}"/>
+            <arg value="-password"/> <arg value="${udclient.password}"/>
+            <arg value="createSnapshot"/>
+            <arg value="${basedir}/snapshot.json"/>
+            
+        </exec>
+
+    </target>
+
+     <target name="deployToUCD" depends="publishToUCD">
+
+     <echo file="${basedir}/request.json">
+{
+  "application": "VacationBooking",
+  "applicationProcess": "DeployVacationBookingHybrid",
+  "description": "CD request for build ${udclient.version}",
+  "environment": "${environment.name}",
+  "onlyChanged": "true",
+  "snapshot": "${udclient.version}",
+}
+        </echo>
+
+        <exec executable="/bin/bash">
+
+            <arg value="/opt/udclient/udclient"/>
+            <arg value="-weburl"/> <arg value="${udclient.weburl}"/>
+            <arg value="-username"/><arg value="${udclient.username}"/>
+            <arg value="-password"/><arg value="${udclient.password}"/>
+            <arg value="requestApplicationProcess"/>
+            <arg value="${basedir}/request.json"/>
+
+        </exec>
+    </target>
+
+    <target name="sendSlackNotification" depends="deployToUCD">
+        <exec executable="/bin/sleep">
+            <arg value="35"/>
+        </exec>
+
+        <exec executable="/usr/bin/curl">
+            <arg value="-X"/><arg value="POST"/><arg value="--data-urlencode"/>
+            <arg value="payload={'channel': '#killer-demo-notify', 'username': 'webhookbot', 'text': 'Your continuous delivery deployment can be found at http://10.99.92.149:8080/vbooking-home', 'icon_emoji': ':ghost:'}"/>
+            <arg value="https://hooks.slack.com/services/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"/>
+        </exec>
+    </target>
+    <target name="main" depends="deployToUCD"/>
+
+</project>
+

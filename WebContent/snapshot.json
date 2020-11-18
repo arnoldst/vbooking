@@ -1,0 +1,10 @@
+
+{'name': 'CD_14',
+'application': 'VacationBooking',
+'description': 'cd snapshot',
+'versions': [{'Tomcat': 'latest'}, {'java': 'latest'}, {'MQ': 'latest'},
+                {'RIT_MQExits':'latest'},{'Vacation_AdminApp':'latest'},
+                {'Vacation_BookingApp':'latest'}, {'Vacation_MQ_Config':'latest'}, {'Vacation_IntegrationTestConfig':'latest'},
+                {'VacationBooking_Proxy':'latest'}]
+}
+        
