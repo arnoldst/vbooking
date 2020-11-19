@@ -64,7 +64,7 @@
 'versions': [{'Vacation-liberty-config': 'latest'}, {'java': 'latest'}, {'MQ': 'latest'},
                 {'RIT_MQExits':'latest'},
                 {'Vacation_BookingApp_Liberty':'latest'}, {'Vacation_MQ_Config':'latest'}, {'Vacation_IntegrationTestConfig':'latest'},
-                {'VacationBooking_Proxy':'latest'}, {'Vacation_PerformanceTests':'latest'}]
+                 {'Vacation_PerformanceTests':'latest'}]
 }
         </echo>
 
