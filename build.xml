@@ -85,7 +85,7 @@
      <echo file="${basedir}/request.json">
 {
   "application": "VacationBooking",
-  "applicationProcess": "DeployVacationBookingHybrid",
+  "applicationProcess": "DeployVacationBooking",
   "description": "CD request for build ${udclient.version}",
   "environment": "${environment.name}",
   "onlyChanged": "true",
