@@ -113,7 +113,7 @@
         <exec executable="/usr/bin/curl">
             <arg value="-X"/><arg value="POST"/><arg value="--data-urlencode"/>
             <arg value="payload={'channel': '#killer-demo-notify', 'username': 'webhookbot', 'text': 'Your continuous delivery deployment can be found at http://158.176.172.93:9080/vbooking-home', 'icon_emoji': ':ghost:'}"/>
-            <arg value="https://hooks.slack.com/services/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"/>
+            <arg value="https://hooks.slack.com/services/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"/>
         </exec>
     </target>
     <target name="main" depends="deployToUCD"/>
