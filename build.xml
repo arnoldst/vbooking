@@ -2,11 +2,11 @@
 
 
     <property environment="env" />
-    <property name="udclient.weburl" value="https://10.99.92.70"/>
+    <property name="udclient.weburl" value="https://ucd-ucd.myucdcluster-a46879f12c1cb86f3d9b4dd6da9a1bec-0000.eu-gb.containers.appdomain.cloud/"/>
     <property name="udclient.username" value="admin"/>
     <property name="udclient.password" value="admin"/>
     <property name="udclient.version" value="CD_${env.BUILD_NUMBER}"/>
-    <property name="environment.name" value="continuousdelivery"/>
+    <property name="environment.name" value="cicd"/>
 
 
     <target name="clean">
