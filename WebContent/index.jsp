@@ -34,7 +34,7 @@
 		<TD>
 			<br><br><br>
 
-			<h1 style="text-indent: 20px; margin-top: -60px;">Welcome to the Twickenham Holiday Booking Website - the best way to plan your holiday. </h1>
+			<h1 style="text-indent: 20px; margin-top: -60px;">Welcome to the Swindon Holiday Booking Website - the best way to plan your holiday. </h1>
 
 			<h3 style="text-indent: 20px;">Find a flight or hotel using our search options or take advantage of our latest special offers.</h3>
 			<br>
